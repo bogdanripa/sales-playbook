@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Enterprise Sales Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F3; --sheet:#FFFFFF; --ink:#18212E; --muted:#56606E; --rule:#D5DAD8;
+  --red:#B3261E; --red-soft:#F7E3E1; --blue:#244F96; --blue-soft:#E3EAF6; --mark:#F1E27C;
+  --display:"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body:"Literata", Georgia, "Times New Roman", serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11151B; --sheet:#181D25; --ink:#E6E9ED; --muted:#9CA5B1; --rule:#2B323D;
+    --red:#F07A6F; --red-soft:#3A1F1D; --blue:#93B4EE; --blue-soft:#1C2940; --mark:#6A5E1E;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11151B; --sheet:#181D25; --ink:#E6E9ED; --muted:#9CA5B1; --rule:#2B323D;
+  --red:#F07A6F; --red-soft:#3A1F1D; --blue:#93B4EE; --blue-soft:#1C2940; --mark:#6A5E1E;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.68;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:3px}
+img{max-width:100%}
+
+/* ---------- Hero ---------- */
+.hero{padding:clamp(2.5rem,6vw,5rem) clamp(1.25rem,5vw,4rem) 2.5rem;max-width:1180px;margin:0 auto}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,6.5vw,4.6rem);line-height:.98;letter-spacing:-.025em;margin:0 0 1.1rem;max-width:14ch}
+.hero .lede{font-size:clamp(1.05rem,1.6vw,1.2rem);max-width:62ch;color:var(--muted);margin:0 0 2.5rem}
+.hero .lede strong{color:var(--ink);font-weight:600}
+
+.map{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:1.5rem clamp(1rem,2.5vw,1.75rem) 1.75rem;overflow-x:auto}
+.map-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem 2rem;margin-bottom:1.25rem}
+.map-head h2{font-family:var(--display);font-weight:700;font-size:1.35rem;margin:0;letter-spacing:-.01em}
+.map-head p{margin:0;color:var(--muted);font-size:.95rem;max-width:52ch}
+.pipeline{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:.75rem;min-width:780px}
+.bucket{border-top:3px solid var(--ink);padding-top:.6rem}
+.bucket-name{font-family:var(--display);font-weight:700;font-size:1.05rem;display:flex;justify-content:space-between;align-items:baseline}
+.bucket-name small{font-family:var(--body);font-weight:400;font-size:.8rem;color:var(--muted)}
+.crm-note{font-size:.8rem;color:var(--muted);margin:.15rem 0 .75rem;min-height:1.3em}
+.chip{display:flex;gap:.55rem;align-items:flex-start;text-decoration:none;color:var(--ink);padding:.5rem .6rem;border:1px solid var(--rule);border-radius:6px;margin-bottom:.45rem;font-size:.9rem;line-height:1.3;background:var(--paper);transition:border-color .15s}
+.chip:hover{border-color:var(--red)}
+.chip b{font-family:var(--display);font-weight:800;color:var(--red);min-width:1.4em}
+.chip.skipped{border-style:dashed;border-color:var(--red);background:var(--red-soft)}
+.map-legend{display:flex;flex-wrap:wrap;gap:1.25rem;margin-top:1rem;font-size:.85rem;color:var(--muted)}
+.map-legend span::before{content:"";display:inline-block;width:1.4em;height:.8em;border:1px solid var(--rule);border-radius:3px;margin-right:.45em;vertical-align:-1px;background:var(--paper)}
+.map-legend span.dash::before{border-style:dashed;border-color:var(--red);background:var(--red-soft)}
+
+/* ---------- Layout ---------- */
+.layout{max-width:1180px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem) 5rem;display:grid;grid-template-columns:220px minmax(0,1fr);gap:3.5rem}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 1.5rem);align-self:start;max-height:calc(100vh - 3rem);overflow:auto;font-family:var(--display);font-size:.9rem;padding-top:3rem}
+nav.toc p{font-weight:700;margin:0 0 .6rem}
+nav.toc ol{list-style:none;margin:0;padding:0}
+nav.toc li a{display:block;padding:.28rem 0 .28rem .75rem;border-left:2px solid var(--rule);color:var(--muted);text-decoration:none;line-height:1.3}
+nav.toc li a:hover{color:var(--ink)}
+nav.toc li a.active{border-left-color:var(--red);color:var(--ink);font-weight:500}
+nav.toc .sub a{padding-left:1.5rem;font-size:.84rem}
+main{min-width:0}
+main > section{padding-top:3rem;max-width:74ch}
+h2.part{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,3.4vw,2.5rem);letter-spacing:-.02em;line-height:1.08;margin:0 0 .5rem}
+.part-intro{color:var(--muted);margin:0 0 1.75rem;font-size:1.05rem}
+h3{font-family:var(--display);font-weight:700;font-size:1.35rem;letter-spacing:-.01em;line-height:1.2;margin:2.2rem 0 .6rem}
+h4{font-family:var(--display);font-weight:700;font-size:1rem;margin:1.5rem 0 .4rem}
+p{margin:0 0 1rem}
+ul,ol{margin:0 0 1rem;padding-left:1.25rem}
+li{margin-bottom:.4rem}
+li::marker{color:var(--muted)}
+strong{font-weight:600}
+mark{background:var(--mark);color:inherit;padding:0 .15em;border-radius:2px}
+
+/* principles */
+.principles{counter-reset:none;list-style:none;padding:0;margin:0;border-top:1px solid var(--rule)}
+.principles li{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:.4rem 1.5rem;padding:1rem 0;border-bottom:1px solid var(--rule);margin:0}
+.principles li b{font-family:var(--display);font-weight:700;font-size:1.02rem;line-height:1.3}
+.principles li span{color:var(--ink)}
+@media (max-width:640px){.principles li{grid-template-columns:1fr}}
+
+/* step blocks */
+.step{position:relative;padding:2.25rem 0 1rem;border-top:1px solid var(--rule);margin-top:2rem}
+.step:first-of-type{margin-top:0}
+.step-top{display:flex;gap:1rem;align-items:baseline;flex-wrap:wrap}
+.step-num{font-family:var(--display);font-weight:800;font-size:3.2rem;line-height:.8;color:var(--red);letter-spacing:-.04em;min-width:1.4ch}
+.step-top h3{margin:0;font-size:1.55rem}
+.bucket-tag{font-family:var(--display);font-size:.8rem;color:var(--muted);border:1px solid var(--rule);border-radius:99px;padding:.1rem .6rem}
+.goal{font-size:1.1rem;margin:.9rem 0 1.2rem;padding-left:1rem;border-left:3px solid var(--ink)}
+.often-skipped{display:inline-block;font-family:var(--display);font-size:.8rem;color:var(--red);border:1px dashed var(--red);border-radius:99px;padding:.05rem .6rem;margin-left:.2rem}
+
+.say{margin:1rem 0 1.25rem;padding:.9rem 1.1rem;background:var(--blue-soft);border-radius:8px}
+.say h4{margin:0 0 .5rem;color:var(--blue)}
+.say p{font-style:italic;margin:0 0 .6rem}
+.say p:last-child{margin-bottom:0}
+
+.avoid{margin:1rem 0 1.25rem;padding:.9rem 1.1rem;background:var(--red-soft);border-radius:8px}
+.avoid h4{margin:0 0 .5rem;color:var(--red)}
+.avoid ul{margin:0}
+.avoid li:last-child{margin-bottom:0}
+
+.aside{font-size:.95rem;color:var(--muted);border-top:1px dashed var(--rule);border-bottom:1px dashed var(--rule);padding:.8rem 0;margin:1.25rem 0}
+.aside b{color:var(--ink);font-family:var(--display)}
+
+/* tables */
+.table-wrap{overflow-x:auto;margin:1rem 0 1.5rem;border:1px solid var(--rule);border-radius:8px;background:var(--sheet)}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:560px}
+th,td{text-align:left;padding:.6rem .85rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--display);font-weight:700;font-size:.88rem;background:var(--paper)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--display);font-weight:700;white-space:nowrap;color:var(--red)}
+
+/* two col compare */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0 1.5rem}
+.compare > div{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.1rem}
+.compare h4{margin-top:0}
+.compare ul{margin:0}
+@media (max-width:640px){.compare{grid-template-columns:1fr}}
+
+/* checklist */
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.7rem;align-items:flex-start;padding:.45rem 0;border-bottom:1px solid var(--rule);margin:0}
+.checklist input{margin-top:.35rem;accent-color:var(--red);width:1.05rem;height:1.05rem;flex:none}
+.checklist label{cursor:pointer}
+.checklist input:checked + label{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--red)}
+.btn{font-family:var(--display);font-size:.88rem;background:transparent;color:var(--ink);border:1px solid var(--rule);border-radius:6px;padding:.35rem .8rem;cursor:pointer}
+.btn:hover{border-color:var(--ink)}
+
+footer{max-width:1180px;margin:0 auto;padding:2rem clamp(1.25rem,5vw,4rem) 3rem;color:var(--muted);font-size:.9rem;border-top:1px solid var(--rule)}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;gap:0}
+  nav.toc{display:none}
+}
+@media print{
+  nav.toc,.btn{display:none}
+  .layout{grid-template-columns:1fr}
+  body{background:#fff;color:#000}
+  .map{overflow:visible}
+  .step{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>The Enterprise Sales Playbook</h1>
+  <p class="lede">Every lesson from four interviews with sales expert <strong>Jen Abel</strong> (co-founder of Jellyfish, GM of enterprise sales at State Affairs), organized into one working playbook. It covers founder-led sales and customer discovery on the way to $1M ARR, the full 14-step enterprise cycle, and scaling from $1M to $10M: pricing and deal crafting, design partners, building the sales team, and benchmarks.</p>
+
+  <div class="map" aria-labelledby="map-title">
+    <div class="map-head">
+      <h2 id="map-title">Your CRM shows five stages. The deal actually runs through fourteen.</h2>
+      <p>CRM stages exist to weight a forecast. The steps inside them are how you actually take a buyer through the deal. Select any step to jump to it.</p>
+    </div>
+    <div class="pipeline">
+      <div class="bucket">
+        <div class="bucket-name">Intro <small>~10% weight</small></div>
+        <div class="crm-note">Open the account and learn</div>
+        <a class="chip" href="#s1"><b>1</b>Land the meeting</a>
+        <a class="chip" href="#s2"><b>2</b>Run the intro call</a>
+        <a class="chip skipped" href="#s3"><b>3</b>Follow-up intro call with your champion</a>
+      </div>
+      <div class="bucket">
+        <div class="bucket-name">Demo</div>
+        <div class="crm-note">Show the 20% that matters</div>
+        <a class="chip skipped" href="#s4"><b>4</b>Prep the pitch and frame (plus optional pre-demo)</a>
+        <a class="chip" href="#s5"><b>5</b>Run the group demo</a>
+        <a class="chip skipped" href="#s6"><b>6</b>Post-demo debrief</a>
+      </div>
+      <div class="bucket">
+        <div class="bucket-name">Proposal <small>~50% weight</small></div>
+        <div class="crm-note">Pricing and pilot</div>
+        <a class="chip skipped" href="#s7"><b>7</b>Identify the pilot and move-forward process</a>
+        <a class="chip" href="#s8"><b>8</b>Prep the pilot (and price it)</a>
+        <a class="chip" href="#s9"><b>9</b>Run the pilot</a>
+        <a class="chip skipped" href="#s10"><b>10</b>Post-pilot session</a>
+      </div>
+      <div class="bucket">
+        <div class="bucket-name">Contracting <small>~80% weight</small></div>
+        <div class="crm-note">Paper and procurement</div>
+        <a class="chip" href="#s11"><b>11</b>Papering prep and procurement timeline</a>
+        <a class="chip" href="#s12"><b>12</b>Papering review</a>
+        <a class="chip" href="#s13"><b>13</b>Papering and procurement process</a>
+      </div>
+      <div class="bucket">
+        <div class="bucket-name">Closed</div>
+        <div class="crm-note">Signed, then expand</div>
+        <a class="chip" href="#s14"><b>14</b>Signature</a>
+        <a class="chip" href="#expansion"><b>+</b>Expansion</a>
+      </div>
+    </div>
+    <div class="map-legend"><span>Step most teams run</span><span class="dash">Step most teams skip, and where deals are won</span></div>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#principles">Core principles</a></li>
+    <li><a href="#founder-led">Founder-led sales</a></li>
+    <li><a href="#discovery">Customer discovery</a></li>
+    <li><a href="#game">Choose your game</a></li>
+    <li><a href="#prospecting">Find your first leads</a></li>
+    <li><a href="#outreach">Write the outreach</a></li>
+    <li><a href="#cycle">The 14-step cycle</a></li>
+    <li class="sub"><a href="#s1">1–3 · Intro</a></li>
+    <li class="sub"><a href="#s4">4–6 · Demo</a></li>
+    <li class="sub"><a href="#s7">7–10 · Pilot</a></li>
+    <li class="sub"><a href="#s11">11–14 · Paper</a></li>
+    <li><a href="#services">Selling services first</a></li>
+    <li><a href="#design-partners">Design partners</a></li>
+    <li><a href="#pricing">Pricing and deal crafting</a></li>
+    <li><a href="#scaling">Building the sales team</a></li>
+    <li><a href="#beyond">Marketing, fundraising, new markets</a></li>
+    <li><a href="#benchmarks">Benchmarks</a></li>
+    <li><a href="#diagnose">Diagnosing problems</a></li>
+    <li><a href="#expansion">After the signature</a></li>
+    <li><a href="#reference">Quick reference</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ================= PRINCIPLES ================= -->
+<section id="principles">
+  <h2 class="part">Core principles</h2>
+  <p class="part-intro">The beliefs everything else in this playbook rests on. When a situation isn't covered by a step, fall back to these.</p>
+  <ul class="principles">
+    <li><b>Process is 80%, art is 20%</b><span>A playbook gets you most of the way, but every buyer is different. Some want small talk, some want to jump in, some are technical. The remaining 20% is how you make them feel: heard, energized, told a good story. Past $1M ARR the balance shifts further toward art: packaging what you've learned, owning the frame, and crafting each deal.</span></li>
+    <li><b>Mirror their buying process</b><span>Enterprise sales means understanding and steering the customer's buying process, not dropping them into yours. Enterprises are more sensitive to the process you take them through than to the demo itself. Around 90% of sellers get this wrong by running the five CRM stages as if they were the process.</span></li>
+    <li><b>Slow down to go fast</b><span>Every extra conversation before the demo, the pilot, and the paper removes a reason for the deal to die later. Rushing up-market deals is how they stall.</span></li>
+    <li><b>Win on information edge</b><span>Your competitive advantage is the intel you collect that competitors don't. Assume you are always up against something: an incumbent, a competitor, or the buyer doing nothing at all.</span></li>
+    <li><b>Different beats better</b><span>"Better" is hard to define and easy to dismiss. Buyers can live with a good-enough tool; switching is painful. Lead with something counterintuitive, a new way of thinking, or a rethink of their business model. The moment you become one of three options being compared side by side, you've mostly lost. Don't copy other companies' language either; even renaming a trendy role to sound like everyone else commoditizes you.</span></li>
+    <li><b>Sell a gap, not a problem</b><span>Problem-selling is specific, technical, and what every salesperson does. Leaders buy opportunity: where they are today, where you can take them, and the unfair advantage ("alpha") they get along the way. Don't sell Mario the mushroom; sell Mario powered up. The buyer should picture themselves as the hero. Change the buyer already feels pressure to make is a stronger hook than a stated problem.</span></li>
+    <li><b>Relevance over personalization</b><span>Anyone can fake personalization, and it often comes across as forced or stale. What matters is why this message matters to this person in this role right now.</span></li>
+    <li><b>Be vulnerable and honest</b><span>Assume the buyer is smarter and better informed than you. Say where you really are, including what the product can't do. Vulnerability makes it feel less like sales and gets you honest feedback.</span></li>
+    <li><b>Ask the questions you're afraid to ask</b><span>"Honestly, do we think this gets done this year?" The truthful answer gets you closer to the real picture, and a buyer who's in it with you won't mind the question.</span></li>
+    <li><b>No is the best answer after yes</b><span>A no is data and saves you time. After a first call it's either a yes or a no; there's no in-between worth another meeting. Naming a polite non-fit out loud also saves the relationship.</span></li>
+    <li><b>Never argue; reframe</b><span>When a buyer says "we already have a tool for that," agree, then move upstream: "You're right, and here's the further opportunity we're giving you access to."</span></li>
+    <li><b>Trust is the number one currency</b><span>Tell people when you're not a fit. They will often lean in harder, and trusted sellers get referrals and word of mouth for years. Never oversell to grab a logo; it shows up as churn in three to nine months.</span></li>
+    <li><b>Relationships close deals</b><span>Enterprise deals increasingly get closed over text, not email. Be the person who picks up immediately when a client calls. People will turn over rocks for you when they know you'll go to bat for them.</span></li>
+    <li><b>Sales should be fun for the buyer</b><span>Bring energy and passion. Many buyers are in routine jobs; you can be the person who changes how they see things, gets them promoted, and grows their influence internally. The market doesn't want to be sold to; it wants to buy.</span></li>
+    <li><b>No scripts</b><span>The fastest way to commoditize yourself is a sales script. Keep BANT (budget, authority, need, timing) in the back of your mind but never ask those questions directly. Craft every pitch, demo, and deal around what this buyer just told you.</span></li>
+    <li><b>Take the work off their plate</b><span>Buying is as hard as selling, and the buyer's job is on the line if they get it wrong. An executive may only champion a new tool once every two or three years. Do 99% of the work: forms, slides, business cases, onboarding, papering.</span></li>
+    <li><b>Make it the group's baby</b><span>A deal owned by one person dies when that person gets busy or someone objects. Get fingerprints from the executive, the champion, and the users on it.</span></li>
+    <li><b>Assume the market talks</b><span>Executives compare notes in group chats, and procurement teams now run contracts through AI. Keep pricing consistent; charging one company 50K and its peer 500K will come back to you.</span></li>
+    <li><b>Stay human</b><span>Don't use boilerplate or AI-generated emails, reports, or imagery. Anyone can produce those, and they read as salesy. AI outbound tools all pull from the same databases, so the people in them are flooded. Your alpha is what makes you stand out.</span></li>
+    <li><b>Rejection is redirection</b><span>Finding product-market fit is a game of subtraction: each rejection moves you closer to the pulse. Learn from it fast. Don't be afraid of looking eager; sending 15 notes to people you can really help isn't cringe. Bringing an AI recorder into an intro call is.</span></li>
+    <li><b>You're only as good as your pipeline</b><span>Celebrate a signature for five minutes, then get back to work.</span></li>
+  </ul>
+</section>
+
+<!-- ================= FOUNDER-LED ================= -->
+<section id="founder-led">
+  <h2 class="part">Founder-led sales</h2>
+  <p class="part-intro">The first commercial milestone of a startup: getting the first customers (the first 10, or the first $500K to $1M) with the founder doing the selling.</p>
+
+  <h3>Why the founder must sell</h3>
+  <p>In the earliest days there's no brand, no marketing engine, and few references, and the product may still be an MVP. <strong>The founder is the product.</strong> The product itself is just the development of the founder's vision, and that vision is never fully aligned with the market on day one. Founder-led sales is how you align the founder's vision with market reality and discover which parts of it the market actually accepts. It starts from the problem, not the product.</p>
+  <p>This matters more than it used to. Building software has never been easier (low-code tools, APIs, a boom in solo founders), while markets have never been more crowded. <strong>The risk now lives in go-to-market</strong>, not in the build.</p>
+  <p>Founder-led sales is a competitive advantage for three reasons:</p>
+  <ol>
+    <li><strong>The founder is the visionary.</strong> No salesperson can speak to the vision the way they can.</li>
+    <li><strong>The founder sits at the top of the hierarchy.</strong> Buyers want to talk to the founder because they usually know something the market doesn't. They don't want to learn from a salesperson.</li>
+    <li><strong>Only the founder spots the "budding moments."</strong> The day-one vision is never the one that reaches product-market fit. Refinements emerge from small moments deep in calls that a non-founder would miss, and only the founder has the right to iterate on the vision.</li>
+  </ol>
+  <p>It also removes the game of telephone. When a salesperson reports "nobody cares about this," it's easy for a founder to blame the salesperson rather than question the vision. Selling yourself keeps accountability close to where decisions are made.</p>
+  <p>Founders are often better at sales than they think. The most successful enterprise sellers are usually not trained salespeople. Founders may be weak at following a process, but they naturally vision-cast, pull on threads, and get people excited.</p>
+
+  <h3>The goal is learning, not revenue</h3>
+  <p>Early founder-led sales is about learning as fast as possible to find the pulse of the market, so you <strong>earn the right to sell</strong>. Think of it as running sales to collect research. Selling for revenue comes after.</p>
+  <p>Be wary of taking late-stage sales advice (often from investors or from salespeople hired from mature companies). Early- and late-stage sales are very different games.</p>
+
+  <h3>Expect it to take longer than you think</h3>
+  <ul>
+    <li>Going from zero to $1M ARR typically takes <strong>18–24 months</strong> at a minimum. Outliers who find it in three to six months are rare.</li>
+    <li>Beware the <strong>illusion of product-market fit</strong>. Two or three customers isn't it. Founders don't get to declare product-market fit; the market and investors do.</li>
+    <li>Product-market fit comes from iteration after iteration, using both rejection and validation to sharpen the vision. Unless you solve a very specific problem, it's hard to build trust with a fickle market.</li>
+  </ul>
+
+  <h3>If you've already built the product</h3>
+  <p>Many first-time founders build first and then go looking for a problem. At that point the product is the least flexible part of the equation, so realistically <strong>the market is what you can pivot</strong>.</p>
+  <ol>
+    <li>List the four or five things your product was built to solve.</li>
+    <li>Prove at least one of them is a priority for a specific market. If you can't align to one, it's hard to see where you go next.</li>
+    <li>Be maniacal about <strong>interviewing, not selling</strong>: what are they prioritizing and putting money towards? See <a href="#discovery">Customer discovery</a>.</li>
+    <li>Resist the urge to demo your "baby." Founders who do end up in demo fatigue: call after call, and when asked "what did you learn?", nothing, because they spent the whole time talking.</li>
+  </ol>
+
+  <h3>When to hand it off</h3>
+  <ul>
+    <li><strong>Don't delegate sales before roughly $1M ARR.</strong> Founders who hand off sales too early usually never find product-market fit, because the one person with the right to iterate on the vision has stepped out.</li>
+    <li>Hire the first salesperson once you have <strong>7–10 customers</strong> and enough pattern recognition to show someone else what's working. If you reach $500K very fast you can move sooner; if you got there slowly, you probably haven't hit velocity yet.</li>
+    <li>A stronger view: don't hire salespeople until Series A. Seed is for experimentation; Series A is for exploiting what you learned.</li>
+    <li>Even after hiring, founders stay involved with the first ~10 enterprise customers, join a new rep's first five calls, and still personally reach out to C-level executives at Series B and C. See <a href="#scaling">Building the sales team</a>.</li>
+    <li>If you bring in outside help, don't outsource the heartbeat of the company. The founder stays the tip of the spear and hears directly from the market.</li>
+  </ul>
+
+  <h3>Start with the market or the technology?</h3>
+  <p>Companies that start from a market pain (Vanta searching for a pain and prototyping in spreadsheets) tend to reach product-market fit faster but may have a lower ceiling. Companies that start from a technical insight (Figma, Airtable) take longer and carry more risk, but the upside is less capped.</p>
+</section>
+
+<section id="discovery">
+  <h2 class="part">Customer discovery</h2>
+  <p class="part-intro">How to test a vision against the market, with or without a product built.</p>
+
+  <h3>You need a vision, not a product</h3>
+  <p>The product doesn't drive customer discovery; the vision does. All you need is <strong>the who and the why</strong>: who you're passionate about serving and the problem you want to solve for them. Not having a product built is an advantage, because you have no bias and no urge to back into what you've already made. Founders with existing products run the same process when exploring new markets.</p>
+  <p>In the US especially, people will take a cold call from a stranger if you can articulate a problem they face. They want to hear how a founder thinks differently. This is why discovery must be founder-driven, not delegated.</p>
+
+  <h3>Turn the vision into problem statements</h3>
+  <ul>
+    <li>Write your vision as testable statements: <em>"We believe [who] is faced with [this challenge or unmet need]."</em></li>
+    <li>Use them as the guardrails for every interview. Four or five constraints is workable; 10 to 20 produces noise nobody can make sense of.</li>
+    <li>Don't expect the market or your investors to hand you a vision. No great product has been built on market consensus.</li>
+    <li><strong>Pick one market and one ICP</strong> you're most confident in, knowing it might be invalidated and you might move to the next. Testing two or three at once just collects conflicting noise.</li>
+  </ul>
+
+  <h3>How to tell a problem is a priority</h3>
+  <p>Look for at least one of three leading indicators:</p>
+  <ol>
+    <li><strong>History:</strong> they've tried to solve it before (a hire, a tool, a project).</li>
+    <li><strong>Measurement:</strong> the cost is tracked, for example a monthly review of what it costs in time or money.</li>
+    <li><strong>Ownership:</strong> it's big enough that someone has been made responsible for it.</li>
+  </ol>
+  <p>If they claim it's a priority, check whether there's a <strong>budget line item</strong> for it. And ask whether the problem is growing or widening; nobody prioritizes a fixed problem.</p>
+
+  <h3>Getting honest answers</h3>
+  <ul>
+    <li><strong>Avoid lazy questions</strong> like "What keeps you up at night?", "If you had a magic wand...", or "What are you prioritizing?" The answers change daily.</li>
+    <li>"This is cool" or "Oh wow" are warning signs, not compliments. Most people won't tell a founder "I would never use this." Ask why it's cool and address the elephant in the room.</li>
+    <li>Go for the <strong>why behind the why</strong> instead of racing to a demo.</li>
+    <li>When they say it's not a fit, ask: "What would need to change for this to be a yes?"</li>
+    <li>After every call, ask yourself what new insight you gained. If the answer is nothing, you talked too much.</li>
+  </ul>
+
+  <div class="say">
+    <h4>The free test</h4>
+    <p>Ask yourself, and ideally the customer: if we gave this away for free, would you use it? Would you put in the time to integrate it?</p>
+    <p>Founders almost always say yes. Customers often say no. If they wouldn't use it free, you have a bigger problem than pricing: people have been nice to you for months.</p>
+  </div>
+
+  <p>No one buys your full product on day one; you haven't earned that trust. Find one specific use case and be precise about what you're testing.</p>
+</section>
+
+<!-- ================= GAME ================= -->
+<section id="game">
+  <h2 class="part">Choose your game</h2>
+  <p class="part-intro">There are really only two games: small business, powered by marketing, and enterprise, led by sales. Decide which one you're playing before you design the motion.</p>
+
+  <h3>The mid-market doesn't exist</h3>
+  <p>Selling to a 100-person company and selling to a 1,000-person company are radically different games, and there's no hybrid. When someone says "mid-market," ask: <strong>the upper end of small business, or the lower end of enterprise?</strong> It's usually the lower end of enterprise. In that case, know you're playing the enterprise game: hire enterprise sellers and charge enterprise ACVs. Blending the two games is how you lose. The number of companies also falls off a cliff past the Fortune 1000; it's a power law, and you can't treat every account the same.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Game</th><th>Who buys</th><th>What it takes</th><th>Watch out for</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Enterprise</strong><br>roughly 500–1,000+ employees</td><td>User and buyer are different people. Procurement, legal, finance, and an executive sponsor all get involved.</td><td>Sales-led, outbound from day one. Long, project-managed cycles. High value, compounding expansion once you're in.</td><td>Many ways to fail. Needs executive-level value or you shouldn't sell top-down.</td></tr>
+      <tr><td><strong>"Mid-market"</strong></td><td>Either upper-end small business or lower-end enterprise. Decide which.</td><td>Play whichever game it really is.</td><td>Straddling both motions. Heavy integrations often get outsourced to consultancies like Accenture, which gets messy.</td></tr>
+      <tr><td><strong>Small business</strong></td><td>User and buyer are the same person. No procurement.</td><td>Marketing-led: high velocity, high volume, lots of dials, inbound. Demo fast.</td><td>Churn. They leave quickly if unhappy (sometimes by disputing charges) and go out of business more often.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Headcount is the simplest proxy for size, but it depends on your pricing model (per seat versus usage). With AI, some large companies may shrink in headcount while staying enterprise buyers, and high margins let them experiment more.</p>
+
+  <h3>How to decide</h3>
+  <ul>
+    <li><strong>Which game does the founder best understand?</strong> A great marketer with an edge in winning a big audience should probably go small business and marketing-led. A founder who understands how large corporations work and is excited to deliver $100K+ of value should go enterprise.</li>
+    <li><strong>Who did you build it for, and where is the problem most felt?</strong> Are you solving an enterprise problem, or only think you are?</li>
+    <li><strong>What do you want your life to be?</strong> This is ten years of your life. Do you want to sell to enterprises and build enterprise features?</li>
+    <li><strong>What do you have experience in, and what story do you want to tell investors?</strong></li>
+    <li><strong>Do you have the infrastructure to sell there?</strong> Enterprise tools must plug into and integrate with existing systems. Some workflow-changing technical tools (Linear, for example) deliberately start with startups and grow with them.</li>
+    <li><strong>What does your deal value allow?</strong> A $5K product has to be marketing-led to make the engine work. A $100K product means outbound from day one. Sellers can't make a living closing $10–20K deals.</li>
+    <li>Both paths work: plenty of companies started with small business and moved up, and others (like Wiz) started in the enterprise.</li>
+  </ul>
+
+  <h3>Go after tier-one logos first</h3>
+  <p>The common VC advice is to learn on smaller, lower-profile customers first. Jen's advice is the opposite. <strong>Tier-one logos</strong> (the Walmarts, McDonald's, Nvidias, Teslas, ExxonMobils, and UnitedHealthcares, the leaders of their industries) are often the real early adopters:</p>
+  <ul>
+    <li>Their job is to stay number one, which is the hardest thing to do, so they'll take lots of swings for even a slight edge. That edge is how people there get promoted.</li>
+    <li>They employ some of the most strategic executives and attract the best talent, and talented people like to experiment.</li>
+    <li>Everyone at number two, three, and four wants to do what number one does, so one tier-one logo makes you referenceable across the industry. It also impresses investors, future hires, and other leads.</li>
+    <li>They want to shape the roadmap, and their voice can take a $100K deal to $1M quickly. (It's still the founder's job to decide what to build.)</li>
+    <li>In the AI era, getting a foot in the door before anyone else matters. Startups are easier and faster to sell to, but you want to reach the enterprise as fast as possible.</li>
+  </ul>
+  <p>Get the founder involved as early as possible and lead with a vision cast, not a problem. See <a href="#outreach">Write the outreach</a>.</p>
+
+  <h3>Don't play the small-business game with an enterprise</h3>
+  <p>If you're product-led and a Walmart asks for three seats, don't sell them small-business pricing on a credit card. That price is now documented. When you later ask for $90K, they'll ask why they paid $9K last year and what the 10x value is, which is very hard to prove. You'll also have skipped the executive whose buy-in unlocks real budget. Structure it as an enterprise deal from the start.</p>
+
+  <h3>Don't rely on channel partners</h3>
+  <p>Many startups hope Accenture or Deloitte will resell them into their clients. It rarely works: you're one of a hundred vendors on their list, and consultants aren't vision-casters. Nobody will sell your vision for you.</p>
+
+  <div class="aside"><b>Running example.</b> The step-by-step cycle below uses a worked case: selling an AI legal-tech product into the legal team at SpaceX for about $100K. Legal is often the largest budget line in the enterprise, sometimes three to four times other functions, and there is always more money for it. That's why so many legal AI startups exist. For deal-size guidance, see <a href="#pricing">Pricing</a>.</div>
+</section>
+
+<!-- ================= PROSPECTING ================= -->
+<section id="prospecting">
+  <h2 class="part">Find your first leads</h2>
+  <p class="part-intro">Before any tool, run small manual experiments to learn who you should be talking to.</p>
+
+  <h3>The 30-person experiment</h3>
+  <ol>
+    <li><strong>Hand-pick 30 people</strong> you're genuinely excited to learn from, and whom you'd happily spend 15–20 minutes writing a thoughtful note to.</li>
+    <li><strong>Check discoverability.</strong> How hard was it to find 30? If 30 is hard or impossible, you'll struggle when you need thousands.</li>
+    <li><strong>Look for commonalities</strong> across the 30: team size, industry, time in role, previous roles. These become your targeting parameters.</li>
+    <li><strong>Pull out all the stops</strong> on each: email, LinkedIn, a phone call, a Twitter DM.</li>
+    <li><strong>Count responses and run the next experiment.</strong> If zero replied: do another 30 the same way, change the message, or target a different role.</li>
+    <li><strong>Once a group responds</strong> (you've spoken to two or three), build a campaign for the next 10–15 in that group.</li>
+    <li><strong>Only then scale.</strong> Volume comes after you know the parameters, and parameters are what make enrichment tools like Clay useful. Without the right questions, these tools produce nothing.</li>
+  </ol>
+
+  <div class="avoid">
+    <h4>Avoid</h4>
+    <ul>
+      <li>Wiring together a stack of sales tools before you know who to target.</li>
+      <li>Blasting thousands of emails on day one. You'll damage your domain health.</li>
+      <li>Segments that can't be discovered (for example, high-net-worth individuals). If qualification only happens on a call, you need far bigger numbers, since maybe two in ten will qualify.</li>
+    </ul>
+  </div>
+
+  <h3>Who to target in the enterprise</h3>
+  <p>Target only two layers: <strong>the executive</strong> who owns the budget (for legal, the general counsel or chief legal officer) or <strong>N-1</strong>, the person one step below them (a VP or director). Anyone further down can't carry your storyline upward. You'll learn about user value instead of executive value, and a $100K deal needs an executive sponsor to allocate budget.</p>
+
+  <h4>The pincer model</h4>
+  <ul>
+    <li>The <strong>founder</strong> reaches out to the executive. The <strong>AE or enterprise sales lead</strong> reaches out to N-1. You work in from both ends.</li>
+    <li>The goal is for at least one to respond. Because you're only one step apart, they'll usually loop in the other.</li>
+    <li>Keep parity when you loop people in: the founder brings a colleague and asks who from their team should join; the AE brings in the founder and asks if their boss wants to be involved.</li>
+    <li>A bonus: the second person may recognize your name from the first outreach.</li>
+  </ul>
+
+  <h4>Finding and reaching them</h4>
+  <ul>
+    <li>Ask ChatGPT or Claude to scan for the executive and their deputy, then verify with your own search.</li>
+    <li>Use enrichment tools to find contact details.</li>
+    <li>Channels: cold calling (often a higher interest rate than email; works for non-technical roles, not for highly technical ones), email, LinkedIn DMs, Twitter, and events.</li>
+    <li>Try LinkedIn, then nudge by email or phone: "I sent you a note on LinkedIn, just want to make sure you saw it." Most people don't check LinkedIn daily.</li>
+    <li>C-level executives may notice your brand but won't respond to marketing campaigns. They respond one-on-one, ideally to the founder.</li>
+    <li>Assume these people get hundreds of emails. Everyone is targeting them. Your storyline has to stand out.</li>
+  </ul>
+  <h3>How Jen actually prospects: by hand</h3>
+  <p>Once the parameters are clear, her own approach is still manual. She uses no outbound tool.</p>
+  <ul>
+    <li><strong>Take the back door.</strong> AI prospecting tools all pull from the same databases, so the people in them are being hit by everyone. Find people who aren't in the database.</li>
+    <li><strong>Keep a mental map of the market.</strong> Know your early adopters, and who you'll approach once you've closed them (the peers who'll be excited by those logos).</li>
+    <li><strong>Follow the news and your gut.</strong> An article about a company can prompt a note even if it has nothing to do with your problem; it just feels like the right day for that account.</li>
+    <li><strong>Find the adjacent ring.</strong> Wherever your insight came from, ask who else would buy into it.</li>
+    <li><strong>Read visual cues.</strong> A profile photo, time in role, and time at the company all shape how you'd pitch someone.</li>
+    <li><strong>Justify the time.</strong> It's worth spending real effort on each note: a $100K deal, played well, turns into $1M over three to five years.</li>
+  </ul>
+  <p>The best salespeople often can't explain why they're good at this; it's a feel, like being a great founder. If prospecting were just a database list plus the right message, everyone would have cracked it by now.</p>
+</section>
+
+<!-- ================= OUTREACH ================= -->
+<section id="outreach">
+  <h2 class="part">Write the outreach</h2>
+  <p class="part-intro">A note from the founder already carries more weight. The message has to earn the rest.</p>
+
+  <h3>The four components</h3>
+  <ol>
+    <li><strong>Relevance.</strong> Open with why this is relevant to them in their role. Why are you reaching out to them specifically?</li>
+    <li><strong>Something counterintuitive.</strong> Say something that makes them stop: "wait, what?", "how could that be?", "I never thought of it that way." A bit of shock value keeps them reading.</li>
+    <li><strong>The problem, not the solution.</strong> Talk about the problem you want to solve, why it must be solved, and why today's approach isn't good enough. Leave them wanting more.</li>
+    <li><strong>Concise.</strong> Two to four sentences, readable on a phone without scrolling. That's how founders and executives write.</li>
+  </ol>
+
+  <h3>For executives: vision-cast and sell the alpha</h3>
+  <ul>
+    <li><strong>Sell a gap, not a problem.</strong> Problem-selling anchors to something narrow and technical; leaders go to bat for an opportunity. Show where they are, where you can take them, and how they become the hero.</li>
+    <li>Go beyond "we fit your AI mandate." Every company has one and every tool claims it.</li>
+    <li>Level one: what problem exactly are you solving? More important: <strong>what does this executive unlock</strong> by bringing in a new tool? Bringing in something new is risky, so the upside has to be worth it.</li>
+    <li>"We'll cut the time it takes to do X" isn't big enough. Executives act like founders of their own business unit: they want influence, budget, headcount. Sell a vision of how they reach the next stage.</li>
+    <li>Pitch a rethink: how they should model their business unit or structure their team in the age of AI, not "we'll help you reduce resources."</li>
+  </ul>
+  <div class="say">
+    <h4>Litmus test</h4>
+    <p>If this executive took your product to their CEO or the board, what would they say? "This product will allow me to ___." If that sentence isn't needle-moving, rewrite the pitch.</p>
+  </div>
+
+  <h3>Vision-casting examples</h3>
+  <ul>
+    <li><strong>An information edge.</strong> "We have access to data (or a way of working) nobody else has, which gets you further upstream so you learn things sooner." Think high-frequency trading: the firms that sold one second of advantage weren't selling fiber cable.</li>
+    <li><strong>A talent edge.</strong> For a developer tool like Cursor, "your team will be more productive" is too small. Try: the best engineers want to use this tool and won't join a company stuck on old ones, so adopting it gives you access to 10x engineers.</li>
+  </ul>
+
+  <h3>Craft each note by hand</h3>
+  <ul>
+    <li>Skip the customized first line. AI writes those now, and everyone uses them. Customize the <strong>framing and the subject line</strong> instead.</li>
+    <li><strong>Match the register</strong> to the person: a casual "QQ" (quick question) in lowercase for some, a tighter, more formal note for more senior people.</li>
+    <li><strong>Time it.</strong> A one-sentence email on a Saturday, tailored to a busy hedge-fund chief legal officer, got a reply.</li>
+    <li>Keep it to three sentences and don't give away the farm. Make them feel they'd <strong>learn something from a 15-minute call</strong>.</li>
+    <li>A template like "I came across your LinkedIn. Are you looking to grow your business by 15%?" says nothing.</li>
+  </ul>
+
+  <h3>Example</h3>
+  <p>Jellyfish's first 20 customers came from cold email built on one counterintuitive line: <em>"We believe 0-to-1 sales talent doesn't exist — that's why we built this model."</em> It was tied to the recipient's situation (they had just raised a seed or Series A, and their website showed which market they were targeting).</p>
+
+  <h3>Tactics</h3>
+  <ul>
+    <li><strong>Read-aloud test:</strong> have your email client read the draft back as audio. You'll catch notes that sound passive-aggressive or off.</li>
+    <li><strong>Ask yourself:</strong> would I reply to this?</li>
+    <li><strong>Iterate:</strong> treat the pitch as a living thing. Keep reframing it based on who responds.</li>
+  </ul>
+
+  <div class="avoid">
+    <h4>Avoid</h4>
+    <ul>
+      <li>Leading with "we're better than X." A procurement leader will ask you to define and measure "better," then wonder whether to just give the incumbent another year.</li>
+      <li>Describing what your product does. That's what every other sales email does.</li>
+      <li>Superficial personalization ("I saw you on such-and-such podcast"), especially when it's stale.</li>
+    </ul>
+  </div>
+
+  <p>When a problem is truly felt, people respond, even in a crowded inbox. More on reading response rates in <a href="#benchmarks">Benchmarks</a>.</p>
+</section>
+
+<!-- ================= CYCLE ================= -->
+<section id="cycle">
+  <h2 class="part">The 14-step enterprise cycle</h2>
+  <p class="part-intro">Each CRM bucket contains three to five meetings that matter. A $1M deal needs more of the upfront meetings; a $100K deal can move a little faster if it's qualified. The whole cycle can run in about 90 days depending on the buyer's maturity.</p>
+
+  <!-- STEP 1 -->
+  <article class="step" id="s1">
+    <div class="step-top"><span class="step-num">1</span><h3>Land the meeting</h3><span class="bucket-tag">Intro</span></div>
+    <p class="goal">Get a one-on-one conversation with the executive or N-1, using a two-to-three-sentence storyline built on alpha.</p>
+    <ul>
+      <li>Target only the executive and N-1, using the <a href="#prospecting">pincer model</a>.</li>
+      <li>Keep the message to two or three sentences, sent through email, LinkedIn, a phone call, or at an event.</li>
+      <li>Lead with the alpha and a vision cast, following <a href="#outreach">the outreach rules</a>.</li>
+    <li>Don't shy away from tier-one logos; they are often the earliest adopters. See <a href="#game">Choose your game</a>.</li>
+      <li>If you can't get an executive excited by your value proposition, you probably shouldn't move into top-down enterprise sales yet.</li>
+    </ul>
+  </article>
+
+  <!-- STEP 2 -->
+  <article class="step" id="s2">
+    <div class="step-top"><span class="step-num">2</span><h3>Run the intro call</h3><span class="bucket-tag">Intro</span></div>
+    <p class="goal">The most important call of the cycle. It sets how they see and respect you, and it's when they share the most. Once it starts feeling like a sales process, people clam up.</p>
+
+    <h4>Setup</h4>
+    <ul>
+      <li>Super informal, 30 minutes, one-on-one dialogue.</li>
+      <li><strong>No demo. No slides.</strong> The demo is the only carrot you control. Once they've seen it, the dream is gone.</li>
+      <li><strong>Don't record the call.</strong> People won't be open or vulnerable if they think they're on the record.</li>
+      <li>If the executive joins, bring your founder.</li>
+    </ul>
+
+    <div class="say">
+      <h4>How to open</h4>
+      <p>"I'll keep this super informal. I don't even know if we need the full 30 minutes. I'd just love to swap intros, and if it makes sense we can always get on another call and go much deeper. I want to understand who you are, and share what we're doing and why I reached out to you specifically. Would you like to go first?"</p>
+    </div>
+    <p><strong>Always let them go first.</strong> The more you hear before you speak, the more precisely you can frame your pitch, and they're in a conversation instead of sitting through a pitch.</p>
+
+    <h4>Questions that open people up</h4>
+    <ul>
+      <li>"Is there an AI mandate at the organization? How are you thinking about the way work gets done today?"</li>
+      <li>"What needs to change going into next year compared with this year? Does anything need to change?" (Change is usually handed down from above, which is what you want to hear about.)</li>
+      <li>"Is there a measurement for that? What would success look like internally?"</li>
+      <li>"Why now? Why not wait another year, with everything else going on?"</li>
+      <li>"Off the record, between the two of us, what really matters here? What do you want to own?"</li>
+      <li>"How does this look in your head? Walk me through what you're picturing." If they can't picture it, that's useful to know too.</li>
+    </ul>
+    <p>For founders at the earliest stage, be openly vulnerable: <em>"We're an early-stage startup, deeply passionate about this specific problem, and we have a lot to learn. Here's how we're thinking about it. Can we get your insight into how this problem shows up on your side?"</em> Say it isn't fully built even if it is. People will tell you "I don't actually care about that" before you build it, but they won't criticize something you've already finished.</p>
+
+    <h4>Qualifying signals</h4>
+    <ul>
+      <li><strong>Is the problem growing or widening?</strong> Nobody prioritizes a fixed problem.</li>
+      <li><strong>Gate check: are they measuring or managing it today?</strong> If no, there's probably not much there. Move on.</li>
+      <li><strong>How have they tried to solve it?</strong> A new hire, another tool, or still an open gap because nothing exists?</li>
+      <li><strong>Does someone own it?</strong> A named problem owner, and ideally a budget line item, shows it's a real priority.</li>
+      <li><strong>Do they admit change is needed?</strong> Change is a stronger signal than a stated problem.</li>
+      <li><strong>Do they pull other people in?</strong> "I need to bring our CTO / my boss to the next call" means they're turning into a buyer.</li>
+    </ul>
+
+    <h4>Read the room and call it</h4>
+    <ul>
+      <li>"This is cool" is not a buying signal. Ask why they think so.</li>
+      <li>If they already have a tool, don't argue. Agree, then reframe upstream to the bigger opportunity.</li>
+      <li>After the first call it should be a clear yes or a clear no. Don't book a second call out of politeness.</li>
+    </ul>
+    <div class="say">
+      <h4>When it feels like a polite no</h4>
+      <p>"I'm getting the sense this might not be a good fit, or not good timing. Did I misinterpret that?"</p>
+      <p>If they agree: "Great, I'd love to stay in touch." You've saved the relationship and a lot of time.</p>
+      <p>Or, to learn more: "What would need to change for this to be a yes?"</p>
+    </div>
+
+    <h4>Your turn to talk</h4>
+    <ul>
+      <li>Spend roughly the last 10 minutes explaining what you do, and keep asking questions while you do.</li>
+      <li>Improvise the pitch around what they just told you. Every storyline is slightly different. A scripted pitch feels artificial and puts them in a box.</li>
+      <li>Don't pepper them with questions. Read how open they are; some people are poker-faced.</li>
+      <li>Be candid about your own weaknesses. A buyer asking "what's the biggest thing your team learned this year?" wants to know you're human.</li>
+    </ul>
+
+    <h4>Close the call</h4>
+    <ul>
+      <li>Book the next call before you hang up. Pull up calendars and ask who else should be invited.</li>
+      <li>If they say "I'll email you," nine times out of ten that means they're not interested and don't want to say it.</li>
+      <li>It's fine to disqualify. About one in four intro calls isn't a fit because of maturity: "Based on where you are and where we are, the gap is too big. I'd love to revisit in a year once you've solved X."</li>
+    </ul>
+
+    <div class="avoid">
+      <h4>Avoid</h4>
+      <ul>
+        <li>Clichéd questions: "What keeps you up at night?", "If you had a magic wand...", "What are your pain points?" The answers change daily.</li>
+        <li>Asking BANT questions outright.</li>
+        <li>Talking about yourself for most of the call, and anchoring them on your product too early.</li>
+        <li>Pretending your product is fully baked; you'll only get polite praise.</li>
+      </ul>
+    </div>
+
+    <div class="aside"><b>If the priority is cost-cutting.</b> There are two buying motions. One is "the cheapest way to do X," for low-priority work where 60% good enough is fine and no one gets fired. The other is high-stakes work where you can charge $250K–$500K because the risk is real. Legal is driven by stamping out risk; marketing and sales are driven by numbers. Aim for the high-alpha bucket: the more you're in it, the more you can charge and the easier everything gets.</div>
+  </article>
+
+  <!-- STEP 3 -->
+  <article class="step" id="s3">
+    <div class="step-top"><span class="step-num">3</span><h3>Follow-up intro call with your champion</h3><span class="bucket-tag">Intro</span><span class="often-skipped">Often skipped</span></div>
+    <p class="goal">Before any demo, co-design it with your champion so the right people are in the room and you show the right things.</p>
+    <p>Most teams go straight from intro to demo. Don't. The person from the intro call is your <strong>champion</strong>: the one who wants this to happen and has been there from day one. Most champions are N-1, even when the executive is involved. You want one person to drive the deal while it feels like a group effort.</p>
+
+    <div class="say">
+      <h4>What to say</h4>
+      <p>"I had so much fun on our first call and I think there's a real opportunity to support you. I'd love to do a demo, but first I want to make sure we have the right people in the room and that I'm showing the right things. Based on our conversation, what do you think would resonate with the team?"</p>
+      <p>"From our first conversation it sounds like these two things matter most, but let me walk you through all five we could cover."</p>
+      <p>"When we demo to the group, could you ask this question? I want them to see the value."</p>
+    </div>
+    <ul>
+      <li>Ask for 30 minutes; expect 15.</li>
+      <li>Show a menu of what you could demo and let them choose. They'll often add something ("also show this, it's part of our mandate").</li>
+      <li>Collect the names of everyone who should attend and book a <strong>one-hour group demo</strong> on their calendars while you're on the call.</li>
+      <li>Ask whether to do a pre-demo with another colleague first. Less mature buyers usually want one; teams already set on moving forward may go straight to the group.</li>
+    </ul>
+    <p>None of your competitors are doing this. You get intel they don't, and your champion now has their fingerprints on the story.</p>
+  </article>
+
+  <!-- STEP 4 -->
+  <article class="step" id="s4">
+    <div class="step-top"><span class="step-num">4</span><h3>Prep the pitch and frame the demo</h3><span class="bucket-tag">Demo</span><span class="often-skipped">Often skipped</span></div>
+    <p class="goal">Read between the lines, confirm what you heard, and build the business case with them so they feel like they're buying rather than being sold to.</p>
+    <ul>
+      <li>Spend real time on your own thinking about what they said and didn't say.</li>
+      <li>Follow up to clarify: "You said this. Did I interpret that correctly? Is that the priority?" It's like prompting a person: each inference gets you a more refined answer.</li>
+      <li><strong>Pre-demo (push for it; it's more intel):</strong> "Let me take five minutes to catch you up on what I've learned from [champion]. What would you add?"</li>
+      <li>By the group demo you want two or three people already excited.</li>
+      <li>Before the demo, ask your champion: <strong>Who's attending? What does each person care about? What should I avoid?</strong> And <strong>what does a good demo look like here?</strong> (30 minutes of discussion? 10 minutes of showing? 40 minutes in the product?)</li>
+    </ul>
+    <div class="avoid">
+      <h4>Avoid</h4>
+      <ul>
+        <li>Going into a group demo with no context on the problem.</li>
+        <li>Accepting an unsolicited "present to four or five of us" request during their due diligence. Either you're a box being checked, or you're demoing with no competitive intel. Either way you've likely lost. Get a one-on-one first.</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- STEP 5 -->
+  <article class="step" id="s5">
+    <div class="step-top"><span class="step-num">5</span><h3>Run the group demo</h3><span class="bucket-tag">Demo</span></div>
+    <p class="goal">Everyone involved in the decision sees a tight story built entirely in their frame, and thinks, "this was built for us."</p>
+    <ul>
+      <li>Get every decision-maker to the table, including adjacent functions (for example, someone from their AI team who'd support rollout).</li>
+      <li><strong>Restart the story</strong> for people you haven't met: who you are and why you're doing this, fully in their frame. They don't know you've done all this homework; it lands as uncanny fit.</li>
+      <li><strong>Replay what you heard.</strong> Before opening the product, restate the three things they told you they want to solve. Did you hear it right? Has anything changed? People want to feel heard.</li>
+      <li>Give the newcomers attention: "I know we haven't had a chance to speak. What do you want to get out of today? I want to focus on what matters to you."</li>
+      <li><strong>Ask where to start.</strong> "Before I guide this, is there anything you specifically want to see first?" About 20–30% of buyers know, especially high-intent inbound leads who've looked at alternatives. Let them lead; you'll learn what they prioritize.</li>
+      <li>If they don't know: "I'm not here to show you everything. I'll show you the one or two things I know you care about."</li>
+      <li>Midway, ask: "Why do you want to do this today? What have you seen that makes you want to implement it now?" Get a real answer on timeline. Then offer: "I can always show more. Is there anything else you want to see?"</li>
+      <li><strong>Demo the 20% that delivers 80% of the value.</strong> You learned what that 20% is on the earlier calls.</li>
+      <li>Let them pull you further: when someone asks "can it also do this?", answer "funny you mention that, we just released it."</li>
+      <li>If someone takes things off track: "I love this conversation. Can we park it? I'd like a separate call just on that." Executives rarely derail meetings.</li>
+      <li>Be different in how you sell, not just in what you sell. The buyer should come away thinking "these people are good."</li>
+    </ul>
+    <div class="avoid">
+      <h4>Avoid</h4>
+      <ul>
+        <li>Demoing everything. Show features they won't use and the narrative unravels. Buyers can't help doing the math: "We'd use half of this, so we're paying $50K for $25K of value." Then it feels over-built and they look for something lighter. Showing only 20–30% of the product is fine; the rest makes you look like a hero at expansion.</li>
+        <li>Running the same demo for every customer. If every demo looks the same, you're doing it wrong.</li>
+        <li>Rushing to the demo up-market. Speed to demo matters when selling a ~$3K tool at volume; for six-figure deals, slow down so the right people are there and it becomes the group's project.</li>
+        <li>A single-person demo, which leaves the deal as one person's pet project.</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- STEP 6 -->
+  <article class="step" id="s6">
+    <div class="step-top"><span class="step-num">6</span><h3>Post-demo debrief</h3><span class="bucket-tag">Demo</span><span class="often-skipped">Often skipped</span></div>
+    <p class="goal">Get your champion's raw read before opinions harden, and find the person who could kill the deal.</p>
+    <div class="say">
+      <h4>Text your champion as soon as the demo ends</h4>
+      <p>"How do you think that went? Can I call you in five minutes? I'd love a fresh debrief before you've talked to anyone."</p>
+      <p>"Where do you think we lost someone? Where did we do well? Is there anyone we should spend more time with before they make up their mind?"</p>
+    </div>
+    <ul>
+      <li>There's always someone who can kill the deal. Protect against it by making sure everyone is aligned and excited.</li>
+      <li>Use the intel if someone goes quiet for two or three weeks: "Would it be worth me finding 15–20 minutes with [person] to hear their thoughts, so we can approach this the way they'd want to see it?"</li>
+      <li>Pricing conversations belong here, after the demo. See <a href="#s8">step 8</a>.</li>
+    </ul>
+  </article>
+
+  <!-- STEP 7 -->
+  <article class="step" id="s7">
+    <div class="step-top"><span class="step-num">7</span><h3>Identify the pilot and move-forward process</h3><span class="bucket-tag">Proposal</span><span class="often-skipped">Often skipped</span></div>
+    <p class="goal">Design a short, tightly controlled pilot, and agree how the deal gets done if it succeeds.</p>
+    <p>Smart buyers always want a pilot, so make it part of your process. There are two kinds:</p>
+    <div class="compare">
+      <div>
+        <h4>Light pilot (preferred)</h4>
+        <ul>
+          <li>No customer data needed; a sandbox is fine.</li>
+          <li><strong>2–3 days</strong> (48–72 hours), not two weeks. Most people get what they need in half a day.</li>
+          <li>Free. You give up the money to control the sales cycle.</li>
+          <li>Saves you around two weeks.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Integrated pilot</h4>
+        <ul>
+          <li>Needs their data or real integration to show value.</li>
+          <li><strong>One to two months, paid</strong>, with the fee credited back if they move forward.</li>
+          <li>Willingness to pay is a huge buying signal. It often lands as a services purchase anyway.</li>
+          <li>Adds about a month to the cycle, so price accordingly.</li>
+        </ul>
+      </div>
+    </div>
+    <p>If they ask for a month and have a good reason, charge for it. Crediting the fee back starts the relationship on a good foot instead of an upsell.</p>
+
+    <div class="aside"><b>On forward-deployed engineers.</b> They're great when they take work off the customer's plate and speed things up. They're a bad sign when they exist because the product is too hard to use. They make sense at Palantir-scale multi-million-dollar deals, or for expansion after landing; on a $100K deal the economics get messy. Many "FDEs" are really account managers or sales engineers with a trendier title.</div>
+  </article>
+
+  <!-- STEP 8 -->
+  <article class="step" id="s8">
+    <div class="step-top"><span class="step-num">8</span><h3>Prep the pilot (and price it)</h3><span class="bucket-tag">Proposal</span></div>
+    <p class="goal">Before anyone logs in, work backwards from signature and settle pricing with your champion.</p>
+
+    <h4>Work backwards from the signature</h4>
+    <div class="say">
+      <h4>Pre-pilot questions</h4>
+      <p>"Assuming a successful pilot, which I'm confident it will be, when do we want signatures? Could we close this by the end of next month?"</p>
+      <p>"Who needs to be involved? Is there a procurement lead we should bring in now? A security lead for due diligence? Someone in legal, or could I draft the paper?"</p>
+      <p>"If this is successful, how far are we from a commitment to roll it out?"</p>
+    </div>
+    <ul>
+      <li>They may want to wait on procurement until after the pilot. Push gently; you're project-managing the deal.</li>
+      <li>If rollout is a quarter away, <strong>delay the pilot</strong>. Running it now burns the momentum and uses up your stages.</li>
+    </ul>
+
+    <h4>Set up the pilot</h4>
+    <ul>
+      <li><strong>Three or four users</strong>: the power users who'd work in it daily, plus your champion (so they can prep you on everything). Not the C-suite; they're not the users.</li>
+      <li>Onboard each person in their own session before the pilot starts.</li>
+      <li>Give each user <strong>three specific tasks</strong>. Be explicit and descriptive. Don't let them log in and wander; that puts the work back on them.</li>
+      <li><strong>Co-author success criteria</strong> with them: what does success look like, and what should they be doing? This applies to both light and integrated pilots.</li>
+      <li>Keep it tight so everyone has a consistent experience and fewer people get lost.</li>
+    </ul>
+
+    <h4>Pricing, one-on-one with your champion</h4>
+    <ul>
+      <li>Hold pricing until <strong>after the demo</strong>. Seen too early, people may think "this is three times what we spend" without knowing why.</li>
+      <li>If they push earlier, give a ballpark range ("somewhere between 150 and 250, and a lot depends on scope").</li>
+      <li>If they haven't raised price concerns by now, that's a cue you have room.</li>
+      <li>Ask your champion how they'll make the case internally, where they'd cut, and how they'll defend it. Offer to build the ROI slide for them.</li>
+    </ul>
+    <div class="say">
+      <h4>If the champion hesitates</h4>
+      <p>"I hear you. Let's take a step back and figure out how to make this work together. What would you feel comfortable going to bat with?"</p>
+      <p>"Could we do a step-up in year two to get to the full value?"</p>
+    </div>
+    <p>You'll hear one of three answers: we're aligned; I'm not too concerned; or I'm not comfortable going to bat for this number. In the last case, don't offer a discount or throw out numbers. Let them tell you what works. They might ask to cut $20K when you'd have gone much lower. You can always sign a two-year deal with full value in year two, or trade a lower price for a longer commitment. More in <a href="#pricing">Pricing and deal crafting</a>.</p>
+  </article>
+
+  <!-- STEP 9 -->
+  <article class="step" id="s9">
+    <div class="step-top"><span class="step-num">9</span><h3>Run the pilot</h3><span class="bucket-tag">Proposal</span></div>
+    <p class="goal">Help three or four users discover the magic, with you doing almost all of the work.</p>
+    <ul>
+      <li>Your job is to take about 99% of the work off their plate so they can discover the value.</li>
+      <li>Watch usage in real time: time spent, bugs, which tasks they completed.</li>
+      <li>If a user dislikes it, treat it as intel: what didn't you like, what wasn't clear, where did you get lost?</li>
+      <li>If someone logged in briefly and stalled, don't contact them directly. Ask your champion: "So-and-so was in for 15 minutes and didn't get past step one. Could you check they're having a good experience?"</li>
+    </ul>
+  </article>
+
+  <!-- STEP 10 -->
+  <article class="step" id="s10">
+    <div class="step-top"><span class="step-num">10</span><h3>Post-pilot session</h3><span class="bucket-tag">Proposal</span><span class="often-skipped">Often skipped</span></div>
+    <p class="goal">Reconcile what users say with what they actually did, before it becomes a decision.</p>
+    <ul>
+      <li>Gather feedback through a survey, one-on-ones with each user, or your champion debriefing internally.</li>
+      <li>Walk in knowing their real usage. "We gave everyone three tasks but most people only spent time on two. Why?" That stops "we wish it did X" when X exists and nobody tried it.</li>
+      <li>Expect politeness ("it's fine, it's good"). Your process should pull the real concerns out.</li>
+      <li>When they go quiet, your champion is the one who'll call and say, "Reading the tea leaves, we should pause this and pick it back up later." That's why an insider is critical.</li>
+      <li>About 80% of pilots should convert. If yours don't, the pilot is weak, qualification is loose, or you oversold a product that isn't there yet.</li>
+    </ul>
+  </article>
+
+  <!-- STEP 11 -->
+  <article class="step" id="s11">
+    <div class="step-top"><span class="step-num">11</span><h3>Papering prep and procurement timeline</h3><span class="bucket-tag">Contracting</span></div>
+    <p class="goal">Put the agreement in writing in a form your champion can forward straight to procurement, with a reason to sign on time.</p>
+    <ul>
+      <li>Write an email your champion can forward: here's what we agreed, here's pricing that assumes signature by this date, and here's the kicker if we hit it (for example, a free month). Always give a reason for urgency.</li>
+      <li><strong>Send a Word document, never a PDF.</strong> They will redline it, and most enterprises can't use Google Docs.</li>
+      <li>Offer the choice: "Do you want to use our paper, or lift from it into yours?" Their paper is often faster.</li>
+      <li>Ask how long due diligence takes and whether there's a backlog (30, 60, or 90 days).</li>
+    </ul>
+    <h4>Selling to procurement</h4>
+    <ul>
+      <li>Procurement are professional buyers and very smart. Sell them too: keep it simple, drop the jargon.</li>
+      <li>Make it feel different. Otherwise they'll say "we already have 17 preferred vendors who do something similar." Deals die when procurement redirects the buyer to an existing vendor.</li>
+      <li>Do the work: "Send me the forms and I'll fill them out for you." You're a small purchase in their queue and easily sidelined.</li>
+      <li>Explain exactly what you do and don't do. If they can't classify you, they'll treat you as high-risk and send a kitchen-sink MSA ($5M insurance, rights to audit your books, and so on).</li>
+      <li>If there's a backlog, split the contract into a <strong>services contract</strong> (onboarding and training users now) and a <strong>technology contract</strong>. The services work creates momentum for the tech contract.</li>
+    </ul>
+  </article>
+
+  <!-- STEP 12 -->
+  <article class="step" id="s12">
+    <div class="step-top"><span class="step-num">12</span><h3>Papering review</h3><span class="bucket-tag">Contracting</span></div>
+    <p class="goal">Get through redlines quickly by talking, not emailing.</p>
+    <ul>
+      <li>You will get redlines. Accept the easy ones.</li>
+      <li>If they're extensive, get their legal team on a live call: "We're 80% of the way there. I have a few questions on your redlines. Can we walk through them together?" That beats weeks of back-and-forth.</li>
+      <li>Push on the points that affect the business; let the rest go.</li>
+      <li>Have your own lawyer review their redlines.</li>
+    </ul>
+  </article>
+
+  <!-- STEP 13 -->
+  <article class="step" id="s13">
+    <div class="step-top"><span class="step-num">13</span><h3>Papering and procurement process</h3><span class="bucket-tag">Contracting</span></div>
+    <p class="goal">Negotiate the terms you can't accept, live, with procurement and legal.</p>
+    <ul>
+      <li>If you're on their paper, expect the kitchen sink and expect to redline. They expect it too.</li>
+      <li>Everything is negotiable, but pick your battles. For example, push back on $10M liability insurance if your exposure doesn't justify it.</li>
+      <li>At this point, a clause won't make the deal fall apart. It's about making sure they understand where you're coming from.</li>
+      <li>Procurement typically takes around 30 days. Its job isn't to kill the deal but to make sure it matches how they buy.</li>
+      <li>"It's stuck in procurement" is often an excuse for bad news the buyer doesn't want to give you, or a sign you sold to someone too junior to navigate it. When an executive calls their buying group, things move.</li>
+      <li>Watch for clauses capping a contract at a share of your revenue (for example, no more than 20%). Ask whether it's a hard line; sometimes it isn't. Don't strip a $100K deal to $20K without understanding what you're giving up.</li>
+    </ul>
+  </article>
+
+  <!-- STEP 14 -->
+  <article class="step" id="s14">
+    <div class="step-top"><span class="step-num">14</span><h3>Signature</h3><span class="bucket-tag">Closed</span></div>
+    <p class="goal">Know who signs before the contract is routed, and make sure they understand what they're signing.</p>
+    <ul>
+      <li>The signatory is often not your executive sponsor. It could be the CFO, chief legal officer, business-unit head, or head of procurement.</li>
+      <li>Ask procurement: "I want this person to have everything they need to know what they're signing. Who is it? Can I give you a few bullets to share?"</li>
+      <li>Make sure your champion knows who it is too, so they can nudge if it stalls.</li>
+      <li>This is where relationships pay off. A champion who knows you'll go to bat for them will push hard: asked whether a deal could close before year-end, one Fortune 10 client said it was a tall order but agreed to make it happen.</li>
+      <li><strong>No work until it's signed.</strong> You get paid only when procurement has a signed contract and finance issues a purchase order. The business unit can't pay you directly.</li>
+    </ul>
+    <div class="aside"><b>The lesson learned the hard way.</b> After a long pharmaceutical procurement process, the CFO received the contract and asked, "What am I signing and why are we doing this?" It went back to procurement, then the business, then the seller, who had to scramble to write a defense without knowing what the CFO cared about. The deal dropped to the bottom of the CFO's queue and lost about a month.</div>
+  </article>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <h2 class="part">Selling services first</h2>
+  <p class="part-intro">About 40–50% of top-down B2B SaaS companies have to sell some form of service before they can sell the technology.</p>
+  <p>If a buyer has no existing process or strategy for the problem, or has never bought technology to solve it, they can't buy technology for it yet. This is especially true for new categories like AI, where they need to answer who's the human in the loop, how success is measured, and what the risks are. Legal and procurement will shut down anything that feels too foreign.</p>
+
+  <h3>Why it's worth it</h3>
+  <ul>
+    <li>It's the fastest way to get your foot in the door. Services are what enterprises know how to buy (consultants, lawyers), often their largest budget line, and there is always budget for it.</li>
+    <li>It shows intent, even though it isn't recurring revenue.</li>
+    <li>You can call them a customer and use their logo.</li>
+    <li>You're paid to educate them and to design their process, which is where the power lives.</li>
+    <li>You shape how they think about the category. If you wait 18 months for them to be ready, someone else will have educated them.</li>
+  </ul>
+
+  <h3>What it looks like</h3>
+  <p>This is consulting towards the acquisition of your product, not one-off consulting. It's "doing things that don't scale" in practice, and the same logic behind forward-deployed engineers.</p>
+  <ul>
+    <li>Getting paid to design a custom pitch the buyer can take to their boss.</li>
+    <li>Mapping their workflow and how they'd integrate a new tool before they consider the technology. (A very traditional company that hadn't changed vendors in five or six years paid a nominal fee for this, then bought the technology contract.)</li>
+    <li>Getting two vendors in a room to plan an implementation.</li>
+    <li>Onboarding and training users as a services contract while the tech contract clears procurement.</li>
+    <li>Coaching executives on where the category is heading. OpenAI reportedly briefed CTOs on how AI would fit their organizations well before launch, which built trust ahead of adoption.</li>
+  </ul>
+
+  <h3>From service to software</h3>
+  <ol>
+    <li>Sell the outcome as a service, with your technology powering it behind the scenes. They don't need to know at first that software is doing the work.</li>
+    <li>Start with something low-risk. "We won't touch your data" is far easier to approve than "connect all your customer data." Work on a contained subset first, build trust, then integrate.</li>
+    <li>Guide them to the product: "You're spending a lot here. Why not use the tool that's been powering this the whole time, directly?"</li>
+  </ol>
+
+  <h3>Rules</h3>
+  <ul>
+    <li><strong>Time-box it to 90 days</strong>, then rescope. Longer than that and things change too much.</li>
+    <li>Price services so they add up to an enterprise-sized contract, and consider prorating (for example, $10K a month) so they get used to your pricing level. Whether services are bundled or unbundled, the total should land around $75–150K.</li>
+    <li>If the buyer is a laggard rather than simply early, decide whether you really want to work with them.</li>
+    <li>If the market already knows how to buy your technology (it has a process, strategy, and implementation team), sell the technology directly.</li>
+    <li>Investors may not love services revenue. Ask them whether you should wait 18 months instead.</li>
+  </ul>
+</section>
+
+<section id="design-partners">
+  <h2 class="part">Design partners</h2>
+  <p class="part-intro">Early customers who help you build the product. Invaluable as guides, but the hardest accounts to turn into full rollouts.</p>
+
+  <h3>Set expectations</h3>
+  <ul>
+    <li>Don't expect design partners to be your million-dollar pipeline. Expect them to guide you.</li>
+    <li>Converting one into a full-rollout customer is a huge win for the market, your team, and your investors, precisely because it's the hardest conversion: they were there when it was messy and usually got a low price.</li>
+    <li>You need them: building without user feedback tied to executive value is very hard.</li>
+  </ul>
+
+  <h3>Choosing them</h3>
+  <ul>
+    <li><strong>The company:</strong> ideally a technology company in the Fortune 1000 that's seen as startup-friendly. They're used to experimenting and once were a startup. Large companies often enjoy getting a taste of startup energy again.</li>
+    <li><strong>The person matters most.</strong> Are they excited to give feedback? Do they see the world the way you do and buy into where you're going? Will they happily use a janky product because they know where it can go?</li>
+  </ul>
+
+  <h3>Framing the deal</h3>
+  <ul>
+    <li>Don't oversell. Say what exists today, <strong>what you can't do</strong>, and what they'll be able to do in six months. "It's really rough right now and barely anything exists, but we'd love your voice in it. Do you want to be on this journey?" Overselling leads to frustration, churn, and cancellations.</li>
+    <li>Ask for skin in the game: a real, paid commitment.</li>
+    <li>Set the pricing frame up front: here's where we are today, here's where pricing is going, and you'll keep a concession (for example, <strong>30% in perpetuity</strong>) because you were with us from day one. A flat $10K design partner with no path up has no growth.</li>
+    <li>Agree on what you're marching towards over the next 6–12 months, and shake on it: "If we deliver what we say, are we aligned?"</li>
+  </ul>
+
+  <h3>Filtering their feedback</h3>
+  <p>It's the founder's job to hold the vision. Much of what design partners ask for reflects the old way of working. Expect roughly <strong>80% noise, 20% gold</strong>: the 20% is the insight you'd never have had without asking. Be willing to say "I hear you, but here's why we're not going to do that." Complaints that a design partner pulled a company in the wrong direction are often an excuse for a founder who didn't filter.</p>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section id="pricing">
+  <h2 class="part">Pricing and deal crafting</h2>
+  <p class="part-intro">Price sets the reference point for every conversation that follows, including renewal and expansion. Get the first number wrong and it follows you.</p>
+
+  <h3>First-contract ranges by segment</h3>
+  <p>The interviews give slightly different ranges depending on context, but they agree on the shape: an early-stage startup's first enterprise contract lands around $75–150K. Never $10K, and never $500K on day one.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Segment</th><th>Typical first contract</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Small business</td><td class="num">$7.5–20K</td><td>Below this, high-touch sales doesn't pay unless velocity is very high. Don't put a sales team on a $2K product.</td></tr>
+      <tr><td>Lower-end enterprise ("mid-market", roughly $250M–$1B revenue)</td><td class="num">$25–75K</td><td>If they'll pay $25K, you'll probably take it and ask for a case study or reference too.</td></tr>
+      <tr><td>Enterprise, early-stage vendor</td><td class="num">$75–150K</td><td>What enterprises are used to for a first contract. Aim for at least $100K. With few references you may land nearer $50–100K, and that's fine. The widest range given is $50–200K, depending on the business unit, the size of the problem, and how senior your buyer is.</td></tr>
+      <tr><td>Enterprise, too high</td><td class="num">$250–500K</td><td>Fortune 100 buyers will laugh at this from a startup with limited references. They know the game.</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Selling $100K and selling $1M is the same process and the same effort.</li>
+    <li>A $15K enterprise deal leaves you nowhere to expand.</li>
+    <li>Don't go in with a $1M deal as a seed-stage startup.</li>
+    <li>If you can't sell at these prices, revisit whether you built for the enterprise at all.</li>
+  </ul>
+  <p>If they talk you down to $50K early on, take the logo, the reference, and the case study; that's worth $500K later. Their credibility with peers and their product feedback matter more than an extra $25K.</p>
+
+  <h3>Why one $100K deal beats ten $10K deals</h3>
+  <p>Most founders would rather close ten $10K deals than lose nine and win one $100K deal. That's usually the wrong trade:</p>
+  <ul>
+    <li><strong>It's a qualification filter.</strong> The best clients don't nickel-and-dime you. If they're fighting over every dollar, they aren't bought in.</li>
+    <li><strong>Small deals can fake product-market fit.</strong> Ten small customers, half of them poor fits, give you false confidence and still need serving, which distracts you.</li>
+    <li><strong>$100K requires an executive.</strong> That means real buy-in, clear value they want to unlock, and the resources to make the rollout succeed. Enterprises are designed to make buying hard, which filters out the merely nice-to-have and makes what you land sticky.</li>
+    <li><strong>You get taken seriously.</strong> A $10K vendor isn't a strategic partner.</li>
+    <li><strong>The math breaks.</strong> Reverse-engineer it: how many $10K deals make $100M? And $10K growing to $12K, then $15K, is weak expansion. $100K growing to $500K is normal when an enterprise wants more seats or more value.</li>
+    <li><strong>Great sellers won't take it.</strong> Commission on a $10K deal won't attract someone who knows how to sell $250–500K.</li>
+    <li><strong>Venture math.</strong> A venture-backed company selling $10K deals to the enterprise is playing the small-business game in the wrong arena.</li>
+    <li><strong>Small deals aren't faster anyway.</strong> Even $10K can require procurement; a $10K deal has taken nine months to close.</li>
+  </ul>
+  <p>The exception: land small only if you can ramp fast, such as $10K in the first months growing to $50K and then $100K within a quarter or two. That path is rare, and there's more room for error.</p>
+
+  <h3>Land contained, and plant the seed</h3>
+  <ul>
+    <li>Don't sell the farm. "It's $150K. Here's who gets access, here's the value we'll deliver, and here's where we're going over time."</li>
+    <li>Sketch what years two and three roughly look like, even though it's hard to see that far out.</li>
+    <li>Beware the anchor. A low landing price becomes the reference point that undermines your expansion. Every jump has to be defensible, and a 10x jump will need to show more like 15x the value. Buyers now run contracts through AI, which will flag it instantly.</li>
+  </ul>
+
+  <h3>Setting the price</h3>
+  <ul>
+    <li><strong>Don't negotiate with yourself.</strong> Understand the value you deliver.</li>
+    <li>Enterprises know their own process costs more than the technology. That's partly why they'll pay more.</li>
+    <li><strong>Price to your sales cycle.</strong> If you can close in 90 days for $100K, do that all day. If it takes nine months, you should probably charge $250K–$300K.</li>
+    <li><strong>If your win rate is above ~35%, your price is too low.</strong> A healthy share of the market isn't mature enough to buy you yet, and that's fine.</li>
+    <li>Keep pricing consistent; buyers compare notes.</li>
+    <li>Cheap-and-good-enough buyers and high-stakes buyers are different motions. Aim for the high-alpha, high-risk work where you can charge more.</li>
+  </ul>
+
+  <h3>Co-author the price</h3>
+  <p>Every enterprise deal looks a little different, because much of it is co-authored with the buyer. They need to be able to say "I got this out of them" when they go to bat for you. Buyers rarely take advantage once you have a relationship.</p>
+  <div class="say">
+    <h4>What to say</h4>
+    <p>"This is a $150K engagement. I'll co-author it with you: we can make it a bit bigger if you need something else, or a bit smaller in year one with a step-up in year two. How do we get this done so that when you go to bat, it's a win?"</p>
+  </div>
+  <ul>
+    <li>If someone needs a lower price, give it to them in exchange for a longer commitment.</li>
+    <li>See also <a href="#s8">step 8</a> for working pricing through with your champion.</li>
+  </ul>
+
+  <h3>Deal crafting: add value that's cheap for you</h3>
+  <p>From $1M to $10M, enterprise sales becomes an art of deal crafting. The buyer needs to feel the value is far greater than the cost. The product isn't only what lands in their hands; it's also the pricing, the opportunity, and the framing. Look for things that cost you little but would be expensive for them:</p>
+  <ul>
+    <li><strong>Custom build:</strong> "We'll build this for you over the next year at no extra cost. It would have cost you engineering headcount you couldn't get." Keep it contained so it doesn't sidetrack your roadmap.</li>
+    <li><strong>Visibility:</strong> "We're running an event and want you front and center as a speaker."</li>
+    <li>Frame every extra around what they'll be able to do tomorrow because of how you serve them today.</li>
+  </ul>
+
+  <h3>Discounting</h3>
+  <ul>
+    <li>Early founders discount endlessly, thinking that's how deals get done. It isn't, and it signals doubt.</li>
+    <li>Discounting just to get a deal over the line is negotiating with yourself. Only do it if they ask, and then ask them to justify it.</li>
+    <li>Tie it to value: "If I give you a 30% discount, can I remove 30% of the scope?"</li>
+    <li>Good reasons to discount: they give you something far beyond using the product, like being a design partner or a reference for two years.</li>
+    <li>For small businesses, leave a little buffer, since it's often the owner's own money.</li>
+    <li>In the enterprise, prefer a step-up in year two and a multi-year contract over cutting the price.</li>
+  </ul>
+
+  <h3>Pricing discovery, by stage</h3>
+  <ul>
+    <li><strong>Zero to $1M:</strong> don't over-invest in pricing. You have more important things to prove: that people will use it (the <a href="#discovery">free test</a>), pay for it, and stay. Willingness to pay is still critical for investors, and once something is perceived as free it's hard to change.</li>
+    <li><strong>$1M to $10M:</strong> pricing becomes a science. Bring in a pricing expert so you don't leave money on the table.</li>
+    <li><strong>At renewal:</strong> true pricing discovery happens with existing customers heading into year two, once they know the value they got. Some will say they didn't use it as much as hoped; others will accept an increase. You can run a pricing review and announce a new price to see how they respond.</li>
+  </ul>
+</section>
+
+<section id="scaling">
+  <h2 class="part">Building the sales team</h2>
+  <p class="part-intro">From about $1M to $10M ARR the founder can no longer be on every deal. They step in at strategic moments, and the team has to sell the way a founder would.</p>
+
+  <h3>When to hire</h3>
+  <ul>
+    <li>Around <strong>$1M ARR</strong>, once you have 7–10 customers and patterns you can hand to someone else.</li>
+    <li>If you've built a small-business company and are moving into the enterprise, you're at zero again, even at $10M ARR. The value proposition, deal structure, target market, and risk tolerance are all different. Expect a lot of unlearning.</li>
+  </ul>
+
+  <h3>Who to hire: someone who can "cosplay the founder"</h3>
+  <p>The best enterprise sellers can do what a founder does: sell the vision, get people excited, run through walls to get the deal done, and craft deals creatively. None of their deals look the same.</p>
+  <ul>
+    <li><strong>A former founder</strong>, if you can find one. They've already sold investors and employees.</li>
+    <li><strong>Someone with deep product or engineering experience and no sales background</strong>, who thinks about the problem in a way the market finds fresh.</li>
+    <li>The ideal is often a blend: non-salespeople make it feel different and special, while experienced sellers qualify and navigate better.</li>
+    <li>They should <strong>mirror the market</strong> they sell to. It's easier to buy from someone who looks and feels like you, and executives want to talk to senior people.</li>
+    <li>Ask: would I want to buy from this person? Could they close a future employee? Do they get excited by the problems and the vision?</li>
+  </ul>
+  <p>It's less about years of experience and more about the person. Truly great enterprise sellers are as rare as great founders or great engineers.</p>
+
+  <div class="avoid">
+    <h4>Avoid</h4>
+    <ul>
+      <li><strong>Small-business reps for enterprise deals.</strong> It's a radically different game: you have to understand how corporations buy, how executives think, and how much risk they'll take.</li>
+      <li><strong>Very junior reps selling to executives</strong>, unless they have deep industry experience or are exceptional. A founder in the room can sometimes compensate.</li>
+      <li><strong>A VP of sales from a big company.</strong> At a big company the brand did the work of building trust. At your stage the product is barely proven, so the seller has to build trust, educate, and sell future value themselves.</li>
+      <li><strong>Traditional, trained salespeople</strong> who make it feel salesy.</li>
+      <li>Treating sales as "just add a body and the product will do the work."</li>
+    </ul>
+  </div>
+
+  <h3>Onboarding and incentives</h3>
+  <ul>
+    <li>Have the founder join the new seller's <strong>first five calls</strong>. By then you'll know whether they have what it takes. Are they asking the founder the right questions?</li>
+    <li>Incentives drive enthusiasm. Show them how much they can make; people achieve a lot when they know it's possible. They still need to believe in the product and the founder.</li>
+    <li><strong>Compensation:</strong> typically a 50/50 split between base salary and variable pay, with commission of about 8–12% of the deal (around 10%) in technology.</li>
+  </ul>
+
+  <h3>Expect failure, and plan for it</h3>
+  <ul>
+    <li>Roughly <strong>one in two</strong> early sales hires fails, possibly more. You can tell quickly. Sometimes it's the seller; sometimes it's the founder's vision that's wrong.</li>
+    <li>Consider hiring <strong>two at once</strong> so you can compare them.</li>
+    <li>Don't be afraid to let someone go.</li>
+    <li>Ask yourself honestly: are you excited by your salesperson, or were they just a hard-to-fill seat?</li>
+  </ul>
+
+  <h3>How to judge a seller mid-deal</h3>
+  <ul>
+    <li>How long from intro call to demo?</li>
+    <li>How many conversations happened between pipeline stages?</li>
+    <li>Can they explain exactly what they'll demo, why, and how they'll open? Every demo should look different.</li>
+  </ul>
+</section>
+
+<section id="beyond">
+  <h2 class="part">Marketing, fundraising, and new markets</h2>
+  <p class="part-intro">How sales fits with the rest of the go-to-market story.</p>
+
+  <h3>Sales before marketing</h3>
+  <ul>
+    <li>In the zero-to-one stage, do sales first. Marketing is one-to-many; it rarely gives you raw feedback. People either ignore it or respond without telling you why.</li>
+    <li>In a sales conversation you can ask the why behind the why, and "what would need to change for this to be a yes?"</li>
+    <li>You have to earn the right to sell, and then earn the right to market. You can only discover the specific problem people prioritize and will pay for by selling first. (Jessica Livingston's essay on why startups should focus on sales rather than marketing makes the same case.)</li>
+    <li>Zero to one is high-touch everything: sales, onboarding, support. Spraying the market before you have precision erodes trust fast.</li>
+    <li>The exceptions: product-led growth, where people must find you, and products that are an obvious must-have.</li>
+    <li>Iterate far more on your pitch than on your product.</li>
+  </ul>
+
+  <h3>Telling the go-to-market story to investors</h3>
+  <ul>
+    <li>Every investor knows the founder's initial vision won't survive day one. Show where you started and what you've eliminated along the way.</li>
+    <li>Going from seed to Series A is about precision and focus. Show what you're becoming the specialist in: one ICP, one use case. Pitching multiple target markets raises eyebrows. A $10M business is built by going narrow and deep, and knowing the problem better than the market does.</li>
+    <li>Share deep customer insight, even without much revenue. Most founders can't, so it sets you apart.</li>
+    <li>Show your learning velocity: how quickly each conversation sharpened your thinking. A startup is an experiment, and showing how you navigate ambiguity builds trust, especially without traction.</li>
+  </ul>
+
+  <h3>Entering the US from another country</h3>
+  <p>Advice given to international founders (for example, from India) expanding into the US:</p>
+  <ol>
+    <li><strong>Come sooner.</strong> The longer you stay local, the more your product, biases, and insights harden around local needs, and the harder it is to flex for the US.</li>
+    <li><strong>Local traction doesn't transfer.</strong> Be careful how you position local logos. Working with one company's Indian division says little to its US team, whose buying process and objectives are different. Overstating it erodes trust.</li>
+    <li><strong>Expect 18–24 months to the first $1M</strong> in the US. There are nuances to learn, and you'll compete with US-based vendors offering similar value.</li>
+    <li><strong>Keep it founder-led.</strong> The vision has to adjust quickly, and US buyers trust a founder they can reach directly.</li>
+    <li><strong>Get as specific as possible.</strong> No US customer uses everything on day one; they'll want to prove value on a narrow use case first.</li>
+    <li>In a tough economy, buying cycles run longer.</li>
+  </ol>
+</section>
+
+<!-- ================= BENCHMARKS ================= -->
+<section id="benchmarks">
+  <h2 class="part">Benchmarks</h2>
+  <p class="part-intro">Rough numbers from the interviews. Use them to spot where your funnel is off, not as targets to chase.</p>
+
+  <h3>Win rate versus conversion rate</h3>
+  <p><strong>Win rate</strong> is the share of qualified opportunities you sign. <strong>Conversion (interest) rate</strong> is the share of outreach that turns into a conversation. They're linked: with a 30–40% win rate you need far less outbound conversion than with a 10% win rate, because every lead that enters the funnel is worth more. Don't obsess over outbound conversion in isolation.</p>
+
+  <h3>Funnel and deal metrics</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Metric</th><th>Benchmark</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Enterprise win rate (qualified opportunity to signed)</td><td class="num">25–35%</td><td>Not 50%. Above this, your price is too low. Early-stage win rates of 15–30% are common.</td></tr>
+      <tr><td>Outbound interest rate, mature</td><td class="num">5–7%</td><td>Can be 2–3%; 8–15% when the founder sends it and the problem is hard and felt.</td></tr>
+      <tr><td>Contacted to qualified (well targeted)</td><td class="num">50–75%</td><td>Assumes you're reaching the right people.</td></tr>
+      <tr><td>Qualified to demo</td><td class="num">~50%</td><td>About half move on to a demo.</td></tr>
+      <tr><td>Past the demo</td><td class="num">~25%</td><td>Roughly a quarter advance further; drop-off narrows after that.</td></tr>
+      <tr><td>Intro calls disqualified</td><td class="num">~1 in 4</td><td>Usually due to maturity, not the wrong person.</td></tr>
+      <tr><td>Pilot to close</td><td class="num">~80%</td><td>Lower means a weak pilot, weak qualification, or a product that isn't ready.</td></tr>
+      <tr><td>Lost deals that come back</td><td class="num">~25%</td><td>Within about a year, once the buyer matures.</td></tr>
+      <tr><td>Enterprise sales cycle</td><td class="num">6–12 months</td><td>90 days is possible (and the goal when well run). Regulated industries run 20–30% longer, often 9–12 months.</td></tr>
+      <tr><td>Procurement</td><td class="num">~30 days</td><td>Ask about due-diligence backlog (30/60/90 days).</td></tr>
+      <tr><td>Demo buyers who know what they want to see</td><td class="num">20–30%</td><td>Ask; if they know, let them lead.</td></tr>
+      <tr><td>Share of product to demo</td><td class="num">20–30%</td><td>The slice that delivers most of the value.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Pricing and growth</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Metric</th><th>Benchmark</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>First enterprise contract</td><td class="num">$75–150K</td><td>Aim for $100K+. Earliest deals may land at $50–100K; the widest range given is $50–200K. See <a href="#pricing">Pricing</a> for other segments.</td></tr>
+      <tr><td>Small-business ACV</td><td class="num">$7.5–20K</td><td>For a sales-led motion.</td></tr>
+      <tr><td>Lower-end enterprise ACV</td><td class="num">$25–75K</td><td>Companies of roughly $250M–$1B revenue.</td></tr>
+      <tr><td>Expansion</td><td class="num">2–5×</td><td>$100–250K growing to $350–500K the next year. One deal went from $60K to $280K in four months.</td></tr>
+      <tr><td>Long-term account value</td><td class="num">~10×</td><td>A $100K deal played well becomes ~$1M over three to five years.</td></tr>
+      <tr><td>Design-partner concession</td><td class="num">~30%</td><td>Offered in perpetuity, with the future price made clear.</td></tr>
+      <tr><td>Services-first companies</td><td class="num">40–50%</td><td>Of top-down B2B SaaS.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Company milestones and team</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Metric</th><th>Benchmark</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Zero to $1M ARR</td><td class="num">18–24 months</td><td>At a minimum; also the typical time to a first $1M in the US for international companies.</td></tr>
+      <tr><td>Founder-led sales until</td><td class="num">~$1M ARR</td><td>$500K if you got there very fast.</td></tr>
+      <tr><td>First sales hire</td><td class="num">7–10 customers</td><td>Once there's a pattern to hand over.</td></tr>
+      <tr><td>Early sales hires who fail</td><td class="num">~50%</td><td>Possibly more. Consider hiring two.</td></tr>
+      <tr><td>Seller pay mix</td><td class="num">50/50</td><td>Base versus variable.</td></tr>
+      <tr><td>Commission</td><td class="num">8–12%</td><td>Of deal value, around 10% in technology.</td></tr>
+      <tr><td>Founder on a new seller's calls</td><td class="num">First 5</td><td>Enough to judge whether they have it.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Durations at a glance</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Activity</th><th>Length</th></tr></thead>
+    <tbody>
+      <tr><td>Outreach message</td><td>2–4 sentences, no scrolling on mobile; sometimes one sentence</td></tr>
+      <tr><td>First prospect list</td><td>30 people, 15–20 minutes per note</td></tr>
+      <tr><td>Intro call</td><td>30 minutes; you talk in the last ~10</td></tr>
+      <tr><td>Champion follow-up call</td><td>Ask for 30 minutes, expect 15</td></tr>
+      <tr><td>Group demo</td><td>1 hour</td></tr>
+      <tr><td>Post-demo debrief</td><td>Within 5 minutes of the demo ending</td></tr>
+      <tr><td>Light pilot</td><td>2–3 days, 3–4 users, 3 tasks each</td></tr>
+      <tr><td>Integrated pilot</td><td>1–2 months, paid, credited back</td></tr>
+      <tr><td>Services engagement</td><td>90-day increments</td></tr>
+      <tr><td>Design-partner roadmap</td><td>6–12 months, agreed up front</td></tr>
+      <tr><td>Gaps between calls</td><td>As tight as possible: a week, not two</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================= DIAGNOSE ================= -->
+<section id="diagnose">
+  <h2 class="part">Diagnosing problems</h2>
+
+  <h3>It's almost never a bottom-of-funnel problem</h3>
+  <p>Teams often think they have a closing problem. It's nearly always <strong>qualification</strong>, which is a symptom of reaching the wrong person, having the wrong message, solving the wrong problem, not being different enough, or pitching something you can't deliver. Time spent on the wrong leads equals zero.</p>
+
+  <h3>Low response to outreach</h3>
+  <ul>
+    <li>Two companies with the same approach can see 2% and 12% response. The difference is usually the founder's insight into the market, which is a hard pill to swallow.</li>
+    <li>Check the technical side (domain health after mass sends), but more often you're not saying anything interesting, the problem isn't widely felt, you're selling a problem instead of an opportunity, or your perspective needs refining.</li>
+    <li>If you use the same AI tools and databases as everyone else, you're knocking on the same front door.</li>
+  </ul>
+
+  <h3>Lots of calls, little learning</h3>
+  <p>Demo fatigue: founders who demo on every call and can't say what they learned. Stop demoing, go back to <a href="#discovery">discovery</a>, and test your problem statements.</p>
+
+  <h3>Excited on the first call, then momentum dies</h3>
+  <ol>
+    <li>Your buyer is trying to sell it upward but only has user value, not executive value.</li>
+    <li>You haven't framed the problem and its implications well enough, so it just sits there.</li>
+    <li>They were being nice and it was never going anywhere. This is the most common reason. Let actions speak louder than words, and ask directly whether you've misread the fit.</li>
+  </ol>
+
+  <h3>"We're stuck in procurement"</h3>
+  <p>This is often a qualification error: you sold to someone too junior to navigate their own company. When an executive picks up the phone to their buying group, things move. It can also be a polite cover for a no. This is another reason to aim for $100K deals with an executive sponsor.</p>
+
+  <h3>Churn after the sale</h3>
+  <p>Usually overselling: promising more than exists, especially to design partners and early customers, or pushing a deal to grab a logo. Be explicit about what you can't do yet.</p>
+
+  <h3>Why sales cycles run long</h3>
+  <ol>
+    <li><strong>Your project management.</strong> Why is the next call in two weeks instead of one?</li>
+    <li><strong>Organizational complexity.</strong> Regulated industries take longer.</li>
+    <li><strong>Budget and seniority.</strong> Is there a budget line already, or are you creating one? How painful is the problem? Senior-vice-president and C-level buyers navigate internal traps well; a director who's never bought before may stumble.</li>
+  </ol>
+
+  <h3>If you're the buyer</h3>
+  <p>If it's not a fit, say why the timing isn't right as early as possible. It's usually timing or organizational maturity. A good seller may push back ("you told me on our first two calls how important this is; did that change?") and propose starting smaller. Sometimes it really is the wrong time, such as mid-acquisition, and a good seller respects that.</p>
+</section>
+
+<!-- ================= EXPANSION ================= -->
+<section id="expansion">
+  <h2 class="part">After the signature</h2>
+  <p class="part-intro">The enterprise is hard to get into, but once you're in, you're in. Expansion is the whole game: if $100–250K doesn't become $350–500K the next year, it isn't an enterprise motion.</p>
+  <ul>
+    <li><strong>You're a preferred vendor.</strong> You can cross into other business units, and when a competitor shows up, procurement will point out you got there first. The moat is real for a while, but not forever.</li>
+    <li><strong>You have intel nobody else has.</strong> You're in the conversations, you have the badge, you can join meetings and ask for introductions. It stops feeling like sales; you're a partner.</li>
+    <li><strong>It compounds.</strong> $100K can become $500K next year and $1M the year after. Enterprises would rather get more from a vendor they already trust than start with a new one.</li>
+    <li><strong>You held back on purpose.</strong> Because you only demoed the 20–30% they needed, you can come back with "we just built this, let me show you what else we can do" and look like a hero.</li>
+    <li><strong>Use the logo.</strong> A tier-one customer opens doors with its peers, who want to do what the leader does.</li>
+    <li><strong>Know what they can expand into.</strong> If you've done this before, it's straightforward. For your first ten enterprise customers, keep the founder involved to learn which parts are custom and what to build next.</li>
+    <li><strong>Revisit pricing at renewal.</strong> Year two is where real pricing discovery happens, once they know the value they got.</li>
+    <li><strong>Sell services again</strong> where it helps expansion.</li>
+    <li>Treat it like fundraising: diligence and more work on your side are normal, and project-managing it well pays off.</li>
+  </ul>
+</section>
+
+<!-- ================= REFERENCE ================= -->
+<section id="reference">
+  <h2 class="part">Quick reference</h2>
+  <p class="part-intro">A deal checklist you can tick off as you go. Your progress is saved in this browser only.</p>
+
+  <div style="display:flex;justify-content:flex-end;margin-bottom:.5rem"><button class="btn" id="reset" type="button">Clear checklist</button></div>
+  <ul class="checklist" id="checklist">
+    <li><input type="checkbox" id="c20"><label for="c20">Problem statements written; one market and one ICP chosen to test</label></li>
+    <li><input type="checkbox" id="c1"><label for="c1">Targeting the executive and N-1 only, with founder and AE working the pincer</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">Outreach is relevant, counterintuitive, casts a vision, and is under four sentences</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">Intro call held with no demo, no slides, no recorder; they went first</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">Problem has history, is measured, and has an owner; they admit change is needed</label></li>
+    <li><input type="checkbox" id="c21"><label for="c21">Clear yes or no after the first call; polite non-fits named out loud</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">Next call booked on the calendar before hanging up</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">Champion identified; 15-minute prep call done; demo co-designed</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">Know every demo attendee, what they care about, and what to avoid</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">Pre-demo held with a second colleague (if their maturity calls for it)</label></li>
+    <li><input type="checkbox" id="c9"><label for="c9">Group demo opens by replaying their priorities and shows only the 20% that matters</label></li>
+    <li><input type="checkbox" id="c10"><label for="c10">Debrief call with champion within five minutes of the demo</label></li>
+    <li><input type="checkbox" id="c11"><label for="c11">Pricing co-authored one-on-one with champion after the demo; ROI slide offered</label></li>
+    <li><input type="checkbox" id="c22"><label for="c22">Landing price is enterprise-sized, contained, and has a year-two path</label></li>
+    <li><input type="checkbox" id="c12"><label for="c12">Signature date, procurement, security, and legal owners identified before the pilot</label></li>
+    <li><input type="checkbox" id="c13"><label for="c13">Pilot scoped: 3–4 users, 3 tasks each, co-authored success criteria</label></li>
+    <li><input type="checkbox" id="c14"><label for="c14">Post-pilot session held with real usage data in hand</label></li>
+    <li><input type="checkbox" id="c15"><label for="c15">Agreement email sent with a signing date and urgency kicker; paper sent as Word</label></li>
+    <li><input type="checkbox" id="c16"><label for="c16">Redlines worked through on a live call; your lawyer reviewed</label></li>
+    <li><input type="checkbox" id="c17"><label for="c17">Signatory known and briefed with bullets before routing</label></li>
+    <li><input type="checkbox" id="c18"><label for="c18">No work started before signature and purchase order</label></li>
+    <li><input type="checkbox" id="c19"><label for="c19">Expansion plan drafted for year two</label></li>
+  </ul>
+
+  <div class="compare" style="margin-top:2rem">
+    <div>
+      <h4>Say things like</h4>
+      <ul>
+        <li>"Would you like to go first?"</li>
+        <li>"What needs to change going into next year?"</li>
+        <li>"Why now, and not in a year?"</li>
+        <li>"Off the record, what really matters here?"</li>
+        <li>"How does this look in your head?"</li>
+        <li>"Why do you say it's cool?"</li>
+        <li>"What would need to change for this to be a yes?"</li>
+        <li>"I'm getting the sense this might not be the right fit or timing. Did I misread that?"</li>
+        <li>"You're right, you have a tool for that. Here's where we take you further."</li>
+        <li>"What would resonate with the team?"</li>
+        <li>"Where do you think we lost someone?"</li>
+        <li>"Honestly, can we get this done this year?"</li>
+        <li>"Help me figure out how to make this work."</li>
+        <li>"Who signs, and what do they need to know?"</li>
+        <li>"Here's what we can't do yet."</li>
+        <li>"I don't think we're the right fit for you."</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Never</h4>
+      <ul>
+        <li>"We're better than X."</li>
+        <li>"What keeps you up at night?"</li>
+        <li>"If you had a magic wand..."</li>
+        <li>"What are your pain points?"</li>
+        <li>"Looking to grow your business by 15%?"</li>
+        <li>Ask BANT questions outright</li>
+        <li>Demo or show slides on the first call</li>
+        <li>Record the intro call</li>
+        <li>Demo the whole product</li>
+        <li>Argue with an objection</li>
+        <li>Offer a discount unprompted</li>
+        <li>Sell an enterprise small-business pricing</li>
+        <li>Count on channel partners to sell for you</li>
+        <li>Send a PDF contract</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  Compiled from four interviews with Jen Abel: three on Lenny's Podcast (founder-led sales from zero to $1M ARR, enterprise sales from $1M to $10M ARR, and a step-by-step walk through the enterprise sales cycle) and one on the Prime Venture Partners podcast (early-stage sales, customer discovery, and entering the US market). Numbers are her rules of thumb, not guarantees; where the interviews gave different ranges, this playbook shows the range and the context.
+</footer>
+
+<script>
+(function(){
+  // Scroll spy for the contents rail
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var targets = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          links.forEach(function(l){ l.classList.remove('active'); });
+          var a = map[e.target.id]; if (a) a.classList.add('active');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    targets.forEach(function(t){ io.observe(t); });
+  }
+
+  // Checklist persistence (per viewer, this browser only)
+  var KEY = 'sales-playbook-checklist';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#checklist input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ saved = {}; }
+  boxes.forEach(function(b){
+    b.checked = !!saved[b.id];
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e){}
+    });
+  });
+  document.getElementById('reset').addEventListener('click', function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
